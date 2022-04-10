@@ -1,12 +1,12 @@
 # xfsquota
 xfsquota is a tool for managing XFS quotas
 
-support set quota and get quota
+## Feature
+- [x] support set quota
+- [x] support get quota
+- [ ] clean quota 
 
-# build
-```shell
-make build
-```
+
 ##  Usage
 ```shell
 xfsquota is a tool for managing XFS quotas
@@ -27,7 +27,7 @@ Flags:
 Use "xfsquota [command] --help" for more information about a command.
 ```
 
-## Set Quota
+### Set Quota
 set quota size 1MiB ,inodes 20 for path `/data/test/quota`
 ```shell
 > xfsquota set /data/test/quota  -s 1MiB -i 20
@@ -35,7 +35,7 @@ set quota size 1MiB ,inodes 20 for path `/data/test/quota`
 set quota success, path: /data/test/quota, size:1MiB, inodes:20
 ```
 
-## Get Quota
+### Get Quota
 get quota for path `/data/test/quota`
 ```shell
 > xfsquota get /data/test/quota
@@ -46,3 +46,7 @@ diskUsage Size(bytes): 0
 diskUsage Inodes: 1
 ```
 
+# build
+```shell
+make build
+```
