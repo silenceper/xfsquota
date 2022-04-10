@@ -163,13 +163,17 @@ func (p *ProjectQuota) GetQuota(targetPath string) (*DiskQuotaSize, error) {
 		klog.Errorf("find project id err: %v", err)
 		return nil, err
 	}
+	if prjId == noQuotaID {
+		return nil, fmt.Errorf("no project id found(maybe not set quota) for %s", targetPath)
+	}
 
 	return getProjectQuota(backingFsBlockDev.device, prjId)
 }
 
 // SetQuota set quota limit for the path
 func (p *ProjectQuota) SetQuota(targetPath string, size *DiskQuotaSize) error {
-	if size == nil || (size.Quota+size.Inodes == 0) {
+	//if first set size is 0 , can not set nonzero size again,we must use clean quota
+	if size == nil {
 		return nil
 	}
 
@@ -212,6 +216,9 @@ func (p *ProjectQuota) ClearQuota(targetPath string) error {
 	if err != nil {
 		klog.Errorf("find project id err: %v", err)
 		return err
+	}
+	if prjId == noQuotaID {
+		return fmt.Errorf("no project id found(maybe not set quota) for %s", targetPath)
 	}
 
 	size := &DiskQuotaSize{
@@ -396,6 +403,7 @@ func (p *ProjectQuota) findOrCreateProjectId(targetPath string,
 
 	isNewId = true
 	idFromSys, err := getProjectID(targetPath)
+	//fmt.Println("idFromSys:", idFromSys)
 	if err != nil {
 		klog.Errorf("get project id for path %s err: %v", targetPath, err)
 		return 0, isNewId, err

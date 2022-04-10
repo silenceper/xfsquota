@@ -38,5 +38,9 @@ func (q *XfsQuota) SetQuota(path string, sizeVal, inodeVal string) error {
 		Quota:  uint64(size),
 		Inodes: inodes,
 	})
+}
 
+// CleanQuota clears the quota for the given path
+func (q *XfsQuota) CleanQuota(path string) error {
+	return q.ProjectQuota.ClearQuota(path)
 }

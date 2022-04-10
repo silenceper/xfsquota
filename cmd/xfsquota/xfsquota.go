@@ -59,6 +59,24 @@ var setQuotaCmd = &cobra.Command{
 	},
 }
 
+var cleanQuotaCmd = &cobra.Command{
+	Use:     "clean",
+	Short:   "clean quota information",
+	Example: "xfsquota clean /home/user",
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) == 0 {
+			cmd.Help()
+			return
+		}
+		err := xfsQuota.CleanQuota(args[0])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println("clean quota success, path:", args[0])
+	},
+}
+
 var versionCmd = &cobra.Command{
 	Use:     "version",
 	Short:   "get version",
@@ -73,6 +91,7 @@ func init() {
 	setQuotaCmd.Flags().StringVarP(&inodes, "inodes", "i", "0", "quota inodes")
 	rootCmd.AddCommand(getQuotaCmd)
 	rootCmd.AddCommand(setQuotaCmd)
+	rootCmd.AddCommand(cleanQuotaCmd)
 	rootCmd.AddCommand(versionCmd)
 }
 
