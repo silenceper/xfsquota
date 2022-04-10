@@ -19,17 +19,18 @@ Available Commands:
   get         Get quota information
   help        Help about any command
   set         Set quota information
+  version     get version
 
 Flags:
-  -b, --basePath string   base path for backing filesystem device (default "./")
-      --debug             debug mode
-  -h, --help              help for xfsquota
+  -h, --help   help for xfsquota
+
+Use "xfsquota [command] --help" for more information about a command.
 ```
 
 ## Set Quota
 set quota size 1MiB ,inodes 20 for path `/data/test/quota`
 ```shell
-> xfsquota -b /data set /data/test/quota  -s 1MiB -i 20
+> xfsquota set /data/test/quota  -s 1MiB -i 20
 
 set quota success, path: /data/test/quota, size:1MiB, inodes:20
 ```
@@ -37,7 +38,7 @@ set quota success, path: /data/test/quota, size:1MiB, inodes:20
 ## Get Quota
 get quota for path `/data/test/quota`
 ```shell
-> xfsquota -b /data get /data/test/quota
+> xfsquota get /data/test/quota
 
 quota Size(bytes): 1048576
 quota Inodes: 20

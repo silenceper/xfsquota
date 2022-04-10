@@ -1,51 +1,27 @@
 package xfsquota
 
+import "C"
 import (
-	"github.com/containers/storage/drivers/quota"
-	"github.com/containers/storage/pkg/directory"
 	"github.com/docker/go-units"
+	"github.com/silenceper/xfsquota/pkg/projectquota"
 	"strconv"
 )
 
+// XfsQuota is the struct of xfs quota
 type XfsQuota struct {
-	*quota.Control
+	*projectquota.ProjectQuota
 }
 
 // NewXfsQuota creates a new XfsQuota
 func NewXfsQuota() *XfsQuota {
-	return &XfsQuota{}
-}
-
-func (q *XfsQuota) Init(basePath string) error {
-	control, err := quota.NewControl(basePath)
-	if err != nil {
-		panic(err)
+	return &XfsQuota{
+		ProjectQuota: projectquota.NewProjectQuota(),
 	}
-	q.Control = control
-	return nil
-}
-
-type QuotaStatus struct {
-	quota.Quota
-	directory.DiskUsage
 }
 
 // GetQuota returns the quota for the given path
-func (q *XfsQuota) GetQuota(path string) (*QuotaStatus, error) {
-	quotaRes := quota.Quota{}
-	err := q.Control.GetQuota(path, &quotaRes)
-	if err != nil {
-		return nil, err
-	}
-	diskUsageRes := directory.DiskUsage{}
-	err = q.Control.GetDiskUsage(path, &diskUsageRes)
-	if err != nil {
-		return nil, err
-	}
-	return &QuotaStatus{
-		Quota:     quotaRes,
-		DiskUsage: diskUsageRes,
-	}, nil
+func (q *XfsQuota) GetQuota(path string) (*projectquota.DiskQuotaSize, error) {
+	return q.ProjectQuota.GetQuota(path)
 }
 
 // SetQuota sets the quota for the given path
@@ -58,8 +34,9 @@ func (q *XfsQuota) SetQuota(path string, sizeVal, inodeVal string) error {
 	if err != nil {
 		return err
 	}
-	return q.Control.SetQuota(path, quota.Quota{
-		Size:   uint64(size),
+	return q.ProjectQuota.SetQuota(path, &projectquota.DiskQuotaSize{
+		Quota:  uint64(size),
 		Inodes: inodes,
 	})
+
 }
