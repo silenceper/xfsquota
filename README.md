@@ -4,7 +4,7 @@ xfsquota is a tool for managing XFS quotas
 ## Feature
 - [x] support set quota
 - [x] support get quota
-- [ ] clean quota 
+- [x] clean quota 
 
 
 ##  Usage
