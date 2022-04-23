@@ -15,6 +15,7 @@ Usage:
   xfsquota [command]
 
 Available Commands:
+  clean       clean quota information
   completion  Generate the autocompletion script for the specified shell
   get         Get quota information
   help        Help about any command
@@ -44,6 +45,11 @@ quota Size(bytes): 1048576
 quota Inodes: 20
 diskUsage Size(bytes): 0
 diskUsage Inodes: 1
+```
+
+### Clean Quota
+```shell
+xfsquota clean /data/test/quota
 ```
 
 # build
