@@ -1,10 +1,10 @@
 package xfsquota
 
-import "C"
 import (
+	"strconv"
+
 	"github.com/docker/go-units"
 	"github.com/silenceper/xfsquota/pkg/projectquota"
-	"strconv"
 )
 
 // XfsQuota is the struct of xfs quota
